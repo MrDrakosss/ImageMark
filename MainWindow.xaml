@@ -1,0 +1,252 @@
+<Window x:Class="ImageMark.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="{DynamicResource AppTitle}"
+        Width="1240" Height="780"
+        MinWidth="1020" MinHeight="640"
+        WindowStartupLocation="CenterScreen"
+        Background="#F3F3F3">
+
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="Margin" Value="0,2,4,2"/>
+        </Style>
+        <Style TargetType="GroupBox">
+            <Setter Property="Padding" Value="8"/>
+            <Setter Property="Margin" Value="0,0,0,8"/>
+        </Style>
+        <Style x:Key="SettingLabel" TargetType="TextBlock">
+            <Setter Property="Margin" Value="0,8,0,2"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+        </Style>
+        <Style x:Key="Swatch" TargetType="Button">
+            <Setter Property="Width" Value="24"/>
+            <Setter Property="Height" Value="24"/>
+            <Setter Property="Margin" Value="0,0,4,4"/>
+            <Setter Property="BorderBrush" Value="#888"/>
+            <Setter Property="Padding" Value="0"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="270"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="330"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- ═══ Bal oldal: képlista ═══ -->
+        <GroupBox Grid.Row="0" Grid.Column="0" Header="{DynamicResource Images}" Margin="0,0,8,8">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <WrapPanel Grid.Row="0">
+                    <Button x:Name="btnAddImages" Content="{DynamicResource AddImages}" Click="BtnAddImages_Click"/>
+                    <Button x:Name="btnRemoveImage" Content="{DynamicResource Remove}" Click="BtnRemoveImage_Click"/>
+                    <Button x:Name="btnClearImages" Content="{DynamicResource ClearList}" Click="BtnClearImages_Click"/>
+                </WrapPanel>
+
+                <ListBox x:Name="lstImages" Grid.Row="1" Margin="0,6,0,6"
+                         AllowDrop="True" Drop="LstImages_Drop" DragOver="LstImages_DragOver"
+                         SelectionChanged="LstImages_SelectionChanged"
+                         HorizontalContentAlignment="Stretch"
+                         ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal" Margin="2">
+                                <Border Width="52" Height="40" Background="#DDD">
+                                    <Image Source="{Binding Thumbnail}" Stretch="Uniform"/>
+                                </Border>
+                                <TextBlock Text="{Binding Name}" Margin="8,0,0,0"
+                                           VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+
+                <TextBlock Grid.Row="2" Foreground="#666" TextWrapping="Wrap"
+                           Text="{DynamicResource DragTip}"/>
+            </Grid>
+        </GroupBox>
+
+        <!-- ═══ Közép: előnézet ═══ -->
+        <GroupBox Grid.Row="0" Grid.Column="1" Header="{DynamicResource Preview}" Margin="0,0,8,8">
+            <Grid>
+                <Border Background="#4A4A4A" ClipToBounds="True">
+                    <Image x:Name="imgPreview" Stretch="Uniform" Margin="6"
+                           RenderOptions.BitmapScalingMode="HighQuality"/>
+                </Border>
+                <TextBlock x:Name="txtPreviewHint"
+                           Text="{DynamicResource PreviewHint}"
+                           Foreground="#CCC" FontSize="15" TextAlignment="Center"
+                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Grid>
+        </GroupBox>
+
+        <!-- ═══ Jobb oldal: beállítások ═══ -->
+        <ScrollViewer Grid.Row="0" Grid.Column="2" VerticalScrollBarVisibility="Auto" Margin="0,0,0,8">
+            <StackPanel>
+                <GroupBox Header="{DynamicResource Preset}">
+                    <StackPanel>
+                        <ComboBox x:Name="cmbPreset" DisplayMemberPath="Name"
+                                  SelectionChanged="CmbPreset_SelectionChanged"/>
+                        <TextBlock Text="{DynamicResource PresetName}" Style="{StaticResource SettingLabel}"/>
+                        <TextBox x:Name="txtPresetName"/>
+                        <WrapPanel Margin="0,8,0,0">
+                            <Button x:Name="btnSavePreset" Content="{DynamicResource SavePreset}" Click="BtnSavePreset_Click"/>
+                            <Button x:Name="btnNewPreset" Content="{DynamicResource NewPreset}" Click="BtnNewPreset_Click"/>
+                            <Button x:Name="btnDeletePreset" Content="{DynamicResource DeletePreset}" Click="BtnDeletePreset_Click"/>
+                        </WrapPanel>
+                        <WrapPanel>
+                            <Button x:Name="btnExportPresets" Content="{DynamicResource ExportPresets}" Click="BtnExportPresets_Click"/>
+                            <Button x:Name="btnImportPresets" Content="{DynamicResource ImportPresets}" Click="BtnImportPresets_Click"/>
+                        </WrapPanel>
+                    </StackPanel>
+                </GroupBox>
+
+                <GroupBox Header="{DynamicResource WatermarkSettings}">
+                    <StackPanel>
+                        <TextBlock Text="{DynamicResource TextLabel}" Style="{StaticResource SettingLabel}" Margin="0,0,0,2"/>
+                        <TextBox x:Name="txtText" TextChanged="Setting_Changed"/>
+
+                        <TextBlock Text="{DynamicResource Font}" Style="{StaticResource SettingLabel}"/>
+                        <ComboBox x:Name="cmbFont" SelectionChanged="Setting_Changed">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Source}" FontFamily="{Binding}"/>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+
+                        <WrapPanel Margin="0,6,0,0">
+                            <CheckBox x:Name="chkBold" Content="{DynamicResource Bold}" Margin="0,0,12,0"
+                                      Checked="Setting_Changed" Unchecked="Setting_Changed"/>
+                            <CheckBox x:Name="chkItalic" Content="{DynamicResource Italic}"
+                                      Checked="Setting_Changed" Unchecked="Setting_Changed"/>
+                        </WrapPanel>
+
+                        <DockPanel Margin="0,8,0,0">
+                            <TextBlock DockPanel.Dock="Left" Text="{DynamicResource FontSize}" FontWeight="SemiBold"/>
+                            <TextBlock DockPanel.Dock="Right" HorizontalAlignment="Right"
+                                       Text="{Binding ElementName=sldSize, Path=Value, StringFormat={}{0:0.0}%}"/>
+                        </DockPanel>
+                        <Slider x:Name="sldSize" Minimum="1" Maximum="20" TickFrequency="0.5"
+                                IsSnapToTickEnabled="True" ValueChanged="Setting_Changed"/>
+
+                        <DockPanel Margin="0,8,0,0">
+                            <TextBlock DockPanel.Dock="Left" Text="{DynamicResource Opacity}" FontWeight="SemiBold"/>
+                            <TextBlock DockPanel.Dock="Right" HorizontalAlignment="Right"
+                                       Text="{Binding ElementName=sldOpacity, Path=Value, StringFormat={}{0:0}%}"/>
+                        </DockPanel>
+                        <Slider x:Name="sldOpacity" Minimum="5" Maximum="100" TickFrequency="1"
+                                IsSnapToTickEnabled="True" ValueChanged="Setting_Changed"/>
+
+                        <DockPanel Margin="0,8,0,0">
+                            <TextBlock DockPanel.Dock="Left" Text="{DynamicResource Angle}" FontWeight="SemiBold"/>
+                            <TextBlock DockPanel.Dock="Right" HorizontalAlignment="Right"
+                                       Text="{Binding ElementName=sldAngle, Path=Value, StringFormat={}{0:0}°}"/>
+                        </DockPanel>
+                        <Slider x:Name="sldAngle" Minimum="0" Maximum="90" TickFrequency="1"
+                                IsSnapToTickEnabled="True" ValueChanged="Setting_Changed"/>
+
+                        <TextBlock Text="{DynamicResource Color}" Style="{StaticResource SettingLabel}"/>
+                        <WrapPanel>
+                            <Button Style="{StaticResource Swatch}" Background="#FFFFFF" Tag="#FFFFFF" Click="Swatch_Click"/>
+                            <Button Style="{StaticResource Swatch}" Background="#C8C8C8" Tag="#C8C8C8" Click="Swatch_Click"/>
+                            <Button Style="{StaticResource Swatch}" Background="#9E9E9E" Tag="#9E9E9E" Click="Swatch_Click"/>
+                            <Button Style="{StaticResource Swatch}" Background="#5A5A5A" Tag="#5A5A5A" Click="Swatch_Click"/>
+                            <Button Style="{StaticResource Swatch}" Background="#000000" Tag="#000000" Click="Swatch_Click"/>
+                            <Button Style="{StaticResource Swatch}" Background="#D32F2F" Tag="#D32F2F" Click="Swatch_Click"/>
+                            <Button Style="{StaticResource Swatch}" Background="#1976D2" Tag="#1976D2" Click="Swatch_Click"/>
+                            <Button Style="{StaticResource Swatch}" Background="#FBC02D" Tag="#FBC02D" Click="Swatch_Click"/>
+                        </WrapPanel>
+                        <DockPanel Margin="0,4,0,0">
+                            <Border DockPanel.Dock="Right" Width="24" Height="24" Margin="6,0,0,0"
+                                    BorderBrush="#888" BorderThickness="1">
+                                <Rectangle x:Name="rectColor"/>
+                            </Border>
+                            <TextBox x:Name="txtColor" TextChanged="Setting_Changed"
+                                     VerticalContentAlignment="Center" ToolTip="{DynamicResource ColorTooltip}"/>
+                        </DockPanel>
+
+                        <DockPanel Margin="0,8,0,0">
+                            <TextBlock DockPanel.Dock="Left" Text="{DynamicResource HSpacing}" FontWeight="SemiBold"/>
+                            <TextBlock DockPanel.Dock="Right" HorizontalAlignment="Right"
+                                       Text="{Binding ElementName=sldSpacingX, Path=Value, StringFormat={}{0:0.0}×}"/>
+                        </DockPanel>
+                        <Slider x:Name="sldSpacingX" Minimum="0.2" Maximum="6" TickFrequency="0.1"
+                                IsSnapToTickEnabled="True" ValueChanged="Setting_Changed"/>
+
+                        <DockPanel Margin="0,8,0,0">
+                            <TextBlock DockPanel.Dock="Left" Text="{DynamicResource VSpacing}" FontWeight="SemiBold"/>
+                            <TextBlock DockPanel.Dock="Right" HorizontalAlignment="Right"
+                                       Text="{Binding ElementName=sldSpacingY, Path=Value, StringFormat={}{0:0.0}×}"/>
+                        </DockPanel>
+                        <Slider x:Name="sldSpacingY" Minimum="0.2" Maximum="8" TickFrequency="0.1"
+                                IsSnapToTickEnabled="True" ValueChanged="Setting_Changed"/>
+
+                        <CheckBox x:Name="chkStagger" Content="{DynamicResource Stagger}" Margin="0,8,0,0"
+                                  Checked="Setting_Changed" Unchecked="Setting_Changed"/>
+                    </StackPanel>
+                </GroupBox>
+
+                <GroupBox Header="{DynamicResource Output}">
+                    <StackPanel>
+                        <TextBlock Text="{DynamicResource OutputFolder}" Style="{StaticResource SettingLabel}" Margin="0,0,0,2"/>
+                        <DockPanel>
+                            <Button DockPanel.Dock="Right" Content="{DynamicResource Browse}" Click="BtnBrowseOutput_Click" Margin="4,0,0,0"/>
+                            <TextBox x:Name="txtOutputDir" VerticalContentAlignment="Center"
+                                     ToolTip="{DynamicResource OutputTooltip}"/>
+                        </DockPanel>
+
+                        <TextBlock Text="{DynamicResource Format}" Style="{StaticResource SettingLabel}"/>
+                        <ComboBox x:Name="cmbFormat">
+                            <ComboBoxItem Content="{DynamicResource OriginalFormat}" Tag="orig" IsSelected="True"/>
+                            <ComboBoxItem Content="JPEG" Tag="jpg"/>
+                            <ComboBoxItem Content="PNG" Tag="png"/>
+                        </ComboBox>
+
+                        <DockPanel Margin="0,8,0,0">
+                            <TextBlock DockPanel.Dock="Left" Text="{DynamicResource JpegQuality}" FontWeight="SemiBold"/>
+                            <TextBlock DockPanel.Dock="Right" HorizontalAlignment="Right"
+                                       Text="{Binding ElementName=sldQuality, Path=Value, StringFormat={}{0:0}}"/>
+                        </DockPanel>
+                        <Slider x:Name="sldQuality" Minimum="50" Maximum="100" Value="92"
+                                TickFrequency="1" IsSnapToTickEnabled="True"/>
+                    </StackPanel>
+                </GroupBox>
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- ═══ Alsó sáv ═══ -->
+        <DockPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3">
+            <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,10,0">
+                <TextBlock Text="🌐" FontSize="16" VerticalAlignment="Center" Margin="0,0,4,0"/>
+                <ComboBox x:Name="cmbLanguage" Width="100" VerticalAlignment="Center"
+                          SelectionChanged="CmbLanguage_SelectionChanged">
+                    <ComboBoxItem Content="English" Tag="en"/>
+                    <ComboBoxItem Content="Magyar" Tag="hu"/>
+                    <ComboBoxItem Content="Deutsch" Tag="de"/>
+                </ComboBox>
+            </StackPanel>
+            <Button x:Name="btnApply" DockPanel.Dock="Right" Click="BtnApply_Click"
+                    Content="{DynamicResource Apply}" FontSize="15" FontWeight="SemiBold"
+                    Padding="18,8" Background="#1976D2" Foreground="White"/>
+            <Button x:Name="btnOpenFolder" DockPanel.Dock="Right" Content="{DynamicResource OpenFolder}"
+                    Click="BtnOpenFolder_Click" Padding="12,8" Margin="0,2,8,2" Visibility="Collapsed"/>
+            <StackPanel VerticalAlignment="Center" Margin="0,0,10,0">
+                <TextBlock x:Name="txtStatus" Text="{DynamicResource Ready}" Foreground="#444"/>
+                <ProgressBar x:Name="progress" Height="8" Margin="0,4,0,0" Visibility="Collapsed"/>
+            </StackPanel>
+        </DockPanel>
+    </Grid>
+</Window>

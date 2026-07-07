@@ -1,0 +1,81 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=System.Runtime">
+
+    <sys:String x:Key="AppTitle">ImageMark – Wasserzeichen-Tool</sys:String>
+
+    <sys:String x:Key="Images">Bilder</sys:String>
+    <sys:String x:Key="AddImages">➕ Bilder hinzufügen…</sys:String>
+    <sys:String x:Key="Remove">Entfernen</sys:String>
+    <sys:String x:Key="ClearList">Liste leeren</sys:String>
+    <sys:String x:Key="DragTip">Tipp: Du kannst Bilder auch aus dem Explorer hierher ziehen.</sys:String>
+
+    <sys:String x:Key="Preview">Vorschau</sys:String>
+    <sys:String x:Key="PreviewHint">Füge links Bilder hinzu,&#10;um hier die Wasserzeichen-Vorschau zu sehen.</sys:String>
+
+    <sys:String x:Key="Preset">Preset</sys:String>
+    <sys:String x:Key="PresetName">Preset-Name</sys:String>
+    <sys:String x:Key="SavePreset">💾 Speichern</sys:String>
+    <sys:String x:Key="NewPreset">➕ Neu</sys:String>
+    <sys:String x:Key="DeletePreset">🗑 Löschen</sys:String>
+    <sys:String x:Key="ExportPresets">⬆ Exportieren…</sys:String>
+    <sys:String x:Key="ImportPresets">⬇ Importieren…</sys:String>
+
+    <sys:String x:Key="WatermarkSettings">Wasserzeichen-Einstellungen</sys:String>
+    <sys:String x:Key="TextLabel">Text</sys:String>
+    <sys:String x:Key="Font">Schriftart</sys:String>
+    <sys:String x:Key="Bold">Fett</sys:String>
+    <sys:String x:Key="Italic">Kursiv</sys:String>
+    <sys:String x:Key="FontSize">Schriftgröße (% der Bildbreite)</sys:String>
+    <sys:String x:Key="Opacity">Deckkraft</sys:String>
+    <sys:String x:Key="Angle">Winkel</sys:String>
+    <sys:String x:Key="Color">Farbe</sys:String>
+    <sys:String x:Key="ColorTooltip">Hex-Farbcode, z. B. #9E9E9E</sys:String>
+    <sys:String x:Key="HSpacing">Horizontaler Abstand</sys:String>
+    <sys:String x:Key="VSpacing">Vertikaler Abstand</sys:String>
+    <sys:String x:Key="Stagger">Zeilen versetzen (Ziegelmuster)</sys:String>
+
+    <sys:String x:Key="Output">Ausgabe</sys:String>
+    <sys:String x:Key="OutputFolder">Zielordner</sys:String>
+    <sys:String x:Key="OutputTooltip">Wenn leer, werden die Bilder neben den Originalen mit dem Suffix „_watermark“ gespeichert.</sys:String>
+    <sys:String x:Key="Browse">Durchsuchen…</sys:String>
+    <sys:String x:Key="Format">Format</sys:String>
+    <sys:String x:Key="OriginalFormat">Originalformat</sys:String>
+    <sys:String x:Key="JpegQuality">JPEG-Qualität</sys:String>
+
+    <sys:String x:Key="Apply">✔ Wasserzeichen anwenden</sys:String>
+    <sys:String x:Key="OpenFolder">📂 Zielordner öffnen</sys:String>
+    <sys:String x:Key="Ready">Bereit.</sys:String>
+
+    <sys:String x:Key="SelectImagesTitle">Bilder auswählen</sys:String>
+    <sys:String x:Key="ImagesFilter">Bilddateien|*.jpg;*.jpeg;*.png;*.bmp;*.tif;*.tiff|Alle Dateien|*.*</sys:String>
+    <sys:String x:Key="SelectOutputTitle">Zielordner auswählen</sys:String>
+    <sys:String x:Key="ExportTitle">Presets exportieren</sys:String>
+    <sys:String x:Key="ImportTitle">Presets importieren</sys:String>
+    <sys:String x:Key="PresetFileFilter">Preset-Dateien (*.json)|*.json|Alle Dateien|*.*</sys:String>
+
+    <sys:String x:Key="StatusAdded">{0} Bild(er) hinzugefügt, insgesamt {1}.</sys:String>
+    <sys:String x:Key="StatusNoneAdded">Keine neuen Bilder hinzugefügt (nur Bilddateien werden unterstützt).</sys:String>
+    <sys:String x:Key="StatusPresetSaved">Preset „{0}“ gespeichert.</sys:String>
+    <sys:String x:Key="StatusPresetCreated">Preset „{0}“ erstellt.</sys:String>
+    <sys:String x:Key="MsgNamePreset">Bitte gib dem Preset einen Namen!</sys:String>
+    <sys:String x:Key="MsgConfirmDelete">Möchtest du das Preset „{0}“ wirklich löschen?</sys:String>
+    <sys:String x:Key="MsgAddImagesFirst">Füge zuerst Bilder zur Liste auf der linken Seite hinzu!</sys:String>
+    <sys:String x:Key="MsgEmptyText">Der Wasserzeichen-Text darf nicht leer sein!</sys:String>
+    <sys:String x:Key="StatusProcessing">Verarbeitung: {0}/{1}…</sys:String>
+    <sys:String x:Key="StatusDone">Fertig! {0} Bild(er) mit Wasserzeichen versehen.</sys:String>
+    <sys:String x:Key="StatusDoneErrors">Fertig: {0} erfolgreich, {1} fehlgeschlagen.</sys:String>
+    <sys:String x:Key="MsgErrorsHeader">Bei folgenden Bildern sind Fehler aufgetreten:</sys:String>
+    <sys:String x:Key="StatusPreviewError">Vorschaufehler: {0}</sys:String>
+    <sys:String x:Key="StatusExported">{0} Preset(s) exportiert.</sys:String>
+    <sys:String x:Key="StatusImported">{0} Preset(s) importiert.</sys:String>
+    <sys:String x:Key="MsgImportFailed">Import fehlgeschlagen: {0}</sys:String>
+    <sys:String x:Key="DefaultPresetName">Standard</sys:String>
+    <sys:String x:Key="ExportSelectPrompt">Wähle die zu exportierenden Presets aus:</sys:String>
+    <sys:String x:Key="SelectAll">Alle auswählen</sys:String>
+    <sys:String x:Key="OK">OK</sys:String>
+    <sys:String x:Key="Cancel">Abbrechen</sys:String>
+    <sys:String x:Key="MsgNoPresetSelected">Wähle mindestens ein Preset aus!</sys:String>
+    <sys:String x:Key="NewPresetName">Neues Preset</sys:String>
+
+</ResourceDictionary>
