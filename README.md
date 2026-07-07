@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="Assets/logo.png" alt="ImageMark logo" width="128"/>
+</p>
+
 # ImageMark
 
 **ImageMark** is a simple, fast watermarking tool for Windows. Add a repeating text watermark to one photo or a whole batch in just a few clicks — pick a saved preset, drop in your images, and apply.
