@@ -1,10 +1,14 @@
 ; ImageMark telepítő – fordítás: ISCC.exe installer\ImageMark.iss
 ; Előfeltétel: dotnet publish -c Release -r win-x64 --self-contained -o publish
 
+; A verzió, a kiadó és a copyright a publikált exe-ből jön (ImageMark.csproj), itt nem kell átírni.
+
 #define MyAppName "ImageMark"
-#define MyAppVersion "1.0.0"
 #define MyAppExeName "ImageMark.exe"
-#define MyAppPublisher "ShelterGame Studio"
+#define MyAppExePath "..\publish\" + MyAppExeName
+#define MyAppVersion GetStringFileInfo(MyAppExePath, "ProductVersion")
+#define MyAppPublisher GetStringFileInfo(MyAppExePath, "CompanyName")
+#define MyAppCopyright GetStringFileInfo(MyAppExePath, "LegalCopyright")
 
 [Setup]
 AppId={{8B1F64D2-3A7C-4E45-9C0B-2ED1F5A0A7B1}
@@ -12,6 +16,9 @@ AppName={#MyAppName}
 AppVersion={#MyAppVersion}
 AppVerName={#MyAppName} {#MyAppVersion}
 AppPublisher={#MyAppPublisher}
+AppCopyright={#MyAppCopyright}
+VersionInfoVersion={#GetVersionNumbersString(MyAppExePath)}
+VersionInfoProductTextVersion={#MyAppVersion}
 DefaultDirName={autopf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
 UninstallDisplayIcon={app}\{#MyAppExeName}

@@ -1,0 +1,100 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <x:String x:Key="AppTitle">ImageMark – Vízjelező</x:String>
+
+    <x:String x:Key="Images">Képek</x:String>
+    <x:String x:Key="AddImages">Képek hozzáadása…</x:String>
+    <x:String x:Key="Remove">Eltávolítás</x:String>
+    <x:String x:Key="ClearList">Lista törlése</x:String>
+    <x:String x:Key="DragTip">Tipp: képeket a fájlkezelőből is behúzhatsz az ablakba.</x:String>
+
+    <x:String x:Key="Preview">Előnézet</x:String>
+    <x:String x:Key="PreviewHint">Adj hozzá képeket a bal oldalon,&#10;és itt látod az előnézetet.</x:String>
+    <x:String x:Key="ZoomHint">Kattintás: nagyítás / vissza · Görgő: zoom · Húzás: mozgatás</x:String>
+
+    <x:String x:Key="Watermark">Vízjel</x:String>
+    <x:String x:Key="Logo">Logó</x:String>
+    <x:String x:Key="PresetSettings">Preset beállításai</x:String>
+    <x:String x:Key="PresetName">Preset neve</x:String>
+    <x:String x:Key="SavePreset">Mentés</x:String>
+    <x:String x:Key="NewPreset">Új</x:String>
+    <x:String x:Key="DeletePreset">Törlés</x:String>
+    <x:String x:Key="ExportPresets">Exportálás…</x:String>
+    <x:String x:Key="ImportPresets">Importálás…</x:String>
+
+    <x:String x:Key="LogoImage">Logó képe</x:String>
+    <x:String x:Key="NoLogo">Nincs kép kiválasztva</x:String>
+    <x:String x:Key="LogoPosition">Alaphelyzet a képen</x:String>
+    <x:String x:Key="LogoSize">Méret (képszélesség %-a)</x:String>
+    <x:String x:Key="LogoMargin">Távolság a kép szélétől</x:String>
+    <x:String x:Key="LogoEditTip">Az előnézeten húzd a logót a helyére, a sarkainál fogva méretezd. Az áthelyezés csak az adott képre vonatkozik.</x:String>
+    <x:String x:Key="ResetLogo">Vissza a preset szerinti helyre</x:String>
+    <x:String x:Key="SelectLogoTitle">Logó kiválasztása</x:String>
+    <x:String x:Key="MsgNothingEnabled">Kapcsold be a vízjelet vagy a logót!</x:String>
+    <x:String x:Key="MsgNoLogoImage">A logó presethez nincs kép kiválasztva!</x:String>
+    <x:String x:Key="MsgLogoLoadFailed">A logó nem tölthető be: {0}</x:String>
+
+    <x:String x:Key="TextLabel">Szöveg</x:String>
+    <x:String x:Key="Font">Betűtípus</x:String>
+    <x:String x:Key="Bold">Félkövér</x:String>
+    <x:String x:Key="Italic">Dőlt</x:String>
+    <x:String x:Key="FontSize">Betűméret (képszélesség %-a)</x:String>
+    <x:String x:Key="Opacity">Átlátszatlanság</x:String>
+    <x:String x:Key="Angle">Dőlésszög</x:String>
+    <x:String x:Key="Color">Szín</x:String>
+    <x:String x:Key="ColorTooltip">Hex színkód, pl. #9E9E9E</x:String>
+    <x:String x:Key="HSpacing">Vízszintes térköz</x:String>
+    <x:String x:Key="VSpacing">Függőleges térköz</x:String>
+    <x:String x:Key="Stagger">Sorok eltolása (téglafal-minta)</x:String>
+
+    <x:String x:Key="Output">Kimenet</x:String>
+    <x:String x:Key="OutputFolder">Célmappa</x:String>
+    <x:String x:Key="OutputTooltip">Ha üresen hagyod, a képek az eredeti mappába kerülnek „_watermark” utótaggal.</x:String>
+    <x:String x:Key="Browse">Tallózás…</x:String>
+    <x:String x:Key="Format">Formátum</x:String>
+    <x:String x:Key="OriginalFormat">Eredeti formátum</x:String>
+    <x:String x:Key="JpegQuality">JPEG minőség</x:String>
+
+    <x:String x:Key="Apply">Alkalmazás a képekre</x:String>
+    <x:String x:Key="OpenFolder">Célmappa megnyitása</x:String>
+    <x:String x:Key="Ready">Készen áll.</x:String>
+
+    <x:String x:Key="Language">Nyelv</x:String>
+    <x:String x:Key="Theme">Téma</x:String>
+    <x:String x:Key="ThemeSystem">Rendszer</x:String>
+    <x:String x:Key="ThemeLight">Világos</x:String>
+    <x:String x:Key="ThemeDark">Sötét</x:String>
+
+    <x:String x:Key="SelectImagesTitle">Képek kiválasztása</x:String>
+    <x:String x:Key="ImageFiles">Képfájlok</x:String>
+    <x:String x:Key="AllFiles">Minden fájl</x:String>
+    <x:String x:Key="SelectOutputTitle">Célmappa kiválasztása</x:String>
+    <x:String x:Key="ExportTitle">Presetek exportálása</x:String>
+    <x:String x:Key="ImportTitle">Presetek importálása</x:String>
+    <x:String x:Key="PresetFiles">Preset fájlok</x:String>
+
+    <x:String x:Key="StatusAdded">{0} kép hozzáadva, összesen {1}.</x:String>
+    <x:String x:Key="StatusNoneAdded">Nem került be új kép (csak képfájlok adhatók hozzá).</x:String>
+    <x:String x:Key="StatusPresetSaved">„{0}” preset elmentve.</x:String>
+    <x:String x:Key="StatusPresetCreated">„{0}” preset létrehozva.</x:String>
+    <x:String x:Key="MsgNamePreset">Adj nevet a presetnek!</x:String>
+    <x:String x:Key="MsgConfirmDelete">Biztosan törlöd a(z) „{0}” presetet?</x:String>
+    <x:String x:Key="MsgAddImagesFirst">Előbb adj hozzá képeket a bal oldali listához!</x:String>
+    <x:String x:Key="MsgEmptyText">A vízjel szövege nem lehet üres!</x:String>
+    <x:String x:Key="StatusProcessing">Feldolgozás: {0}/{1}…</x:String>
+    <x:String x:Key="StatusDone">Kész! {0} kép elkészült.</x:String>
+    <x:String x:Key="StatusDoneErrors">Kész: {0} sikeres, {1} hibás.</x:String>
+    <x:String x:Key="MsgErrorsHeader">Az alábbi képeknél hiba történt:</x:String>
+    <x:String x:Key="StatusPreviewError">Előnézeti hiba: {0}</x:String>
+    <x:String x:Key="StatusExported">{0} preset exportálva.</x:String>
+    <x:String x:Key="StatusImported">{0} preset importálva.</x:String>
+    <x:String x:Key="MsgImportFailed">Az importálás nem sikerült: {0}</x:String>
+    <x:String x:Key="DefaultPresetName">Alapértelmezett</x:String>
+    <x:String x:Key="ExportSelectPrompt">Válaszd ki az exportálandó preseteket:</x:String>
+    <x:String x:Key="SelectAll">Összes kijelölése</x:String>
+    <x:String x:Key="OK">OK</x:String>
+    <x:String x:Key="Cancel">Mégse</x:String>
+    <x:String x:Key="NewPresetName">Új preset</x:String>
+
+</ResourceDictionary>

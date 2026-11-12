@@ -7,6 +7,13 @@ public class AppSettings
 {
     public string Language { get; set; } = "en";
 
+    /// <summary>"system", "light" vagy "dark".</summary>
+    public string Theme { get; set; } = "system";
+
+    public bool WatermarkEnabled { get; set; } = true;
+
+    public bool LogoEnabled { get; set; }
+
     private static readonly string Dir =
         Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "ImageMark");
 

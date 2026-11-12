@@ -1,0 +1,486 @@
+<win:FAAppWindow x:Class="ImageMark.MainWindow"
+                 xmlns="https://github.com/avaloniaui"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:ui="using:FluentAvalonia.UI.Controls"
+                 xmlns:win="using:FluentAvalonia.UI.Windowing"
+                 xmlns:local="using:ImageMark"
+                 xmlns:models="using:ImageMark.Models"
+                 Icon="/Assets/logo.png"
+                 Width="1280" Height="800"
+                 MinWidth="1040" MinHeight="640"
+                 WindowStartupLocation="CenterScreen">
+
+    <win:FAAppWindow.Styles>
+        <Style Selector="Border.card">
+            <Setter Property="Background" Value="{DynamicResource CardBackgroundFillColorDefaultBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource CardStrokeColorDefaultBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Padding" Value="16"/>
+        </Style>
+        <Style Selector="TextBlock.cardTitle">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+        <Style Selector="TextBlock.label">
+            <Setter Property="Margin" Value="0,12,0,4"/>
+        </Style>
+        <Style Selector="TextBlock.secondary">
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
+        </Style>
+        <Style Selector="Grid.sliderHeader">
+            <Setter Property="Margin" Value="0,12,0,0"/>
+        </Style>
+        <Style Selector="ToggleSwitch.cardSwitch">
+            <Setter Property="OnContent" Value="{x:Null}"/>
+            <Setter Property="OffContent" Value="{x:Null}"/>
+            <Setter Property="MinWidth" Value="0"/>
+            <Setter Property="Margin" Value="0,-6"/>
+        </Style>
+        <Style Selector="Expander.settings">
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="Padding" Value="12"/>
+            <Setter Property="Margin" Value="0,8,0,0"/>
+        </Style>
+        <Style Selector="Button.swatch">
+            <Setter Property="Padding" Value="3"/>
+            <Setter Property="MinWidth" Value="0"/>
+            <Setter Property="MinHeight" Value="0"/>
+            <Setter Property="Margin" Value="0,0,2,0"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+        </Style>
+        <Style Selector="Border.chip">
+            <Setter Property="Width" Value="22"/>
+            <Setter Property="Height" Value="22"/>
+            <Setter Property="CornerRadius" Value="4"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource ControlStrongStrokeColorDefaultBrush}"/>
+        </Style>
+        <Style Selector="RadioButton.anchor">
+            <Setter Property="MinWidth" Value="0"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Margin" Value="0,0,6,0"/>
+        </Style>
+        <Style Selector="Rectangle.logoHandle">
+            <Setter Property="Fill" Value="White"/>
+            <Setter Property="Stroke" Value="{DynamicResource AccentFillColorDefaultBrush}"/>
+        </Style>
+    </win:FAAppWindow.Styles>
+
+    <Grid x:Name="rootGrid" Margin="12,4,12,12" RowDefinitions="*,Auto" ColumnDefinitions="280,*,354"
+          DragDrop.AllowDrop="True" Background="Transparent">
+
+        <!-- ═══ Bal oldal: képlista ═══ -->
+        <Border Grid.Row="0" Grid.Column="0" Classes="card" Margin="0,0,8,0">
+            <Grid RowDefinitions="Auto,Auto,*,Auto">
+                <Grid Grid.Row="0" ColumnDefinitions="*,Auto,Auto">
+                    <TextBlock Classes="cardTitle" Text="{DynamicResource Images}"/>
+                    <Button x:Name="btnRemoveImage" Grid.Column="1" Padding="8" Margin="0,0,4,0"
+                            ToolTip.Tip="{DynamicResource Remove}" Click="BtnRemoveImage_Click">
+                        <ui:FASymbolIcon Symbol="Remove" FontSize="16"/>
+                    </Button>
+                    <Button x:Name="btnClearImages" Grid.Column="2" Padding="8"
+                            ToolTip.Tip="{DynamicResource ClearList}" Click="BtnClearImages_Click">
+                        <ui:FASymbolIcon Symbol="Delete" FontSize="16"/>
+                    </Button>
+                </Grid>
+
+                <Button x:Name="btnAddImages" Grid.Row="1" Margin="0,12,0,0"
+                        HorizontalAlignment="Stretch" Click="BtnAddImages_Click">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <ui:FASymbolIcon Symbol="Add" FontSize="16"/>
+                        <TextBlock Text="{DynamicResource AddImages}"/>
+                    </StackPanel>
+                </Button>
+
+                <ListBox x:Name="lstImages" Grid.Row="2" Margin="-8,8,-8,8" Background="Transparent"
+                         SelectionChanged="LstImages_SelectionChanged"
+                         ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate x:DataType="local:ImageItem">
+                            <Grid ColumnDefinitions="Auto,*" Margin="0,4">
+                                <Border Width="56" Height="42" CornerRadius="4" ClipToBounds="True"
+                                        Background="{DynamicResource PreviewBackgroundBrush}">
+                                    <Image Source="{Binding Thumbnail}" Stretch="UniformToFill"/>
+                                </Border>
+                                <TextBlock Grid.Column="1" Text="{Binding Name}" Margin="10,0,0,0"
+                                           VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+
+                <TextBlock Grid.Row="3" Classes="secondary" FontSize="12" TextWrapping="Wrap"
+                           Text="{DynamicResource DragTip}"/>
+            </Grid>
+        </Border>
+
+        <!-- ═══ Közép: előnézet ═══ -->
+        <Border Grid.Row="0" Grid.Column="1" Classes="card" Margin="0,0,8,0">
+            <Grid RowDefinitions="Auto,*">
+                <Grid ColumnDefinitions="Auto,*">
+                    <TextBlock Classes="cardTitle" Text="{DynamicResource Preview}"/>
+                    <TextBlock Grid.Column="1" Classes="secondary" FontSize="12"
+                               Text="{DynamicResource ZoomHint}" Margin="16,0,0,0"
+                               HorizontalAlignment="Right" VerticalAlignment="Center"
+                               TextTrimming="CharacterEllipsis"/>
+                </Grid>
+
+                <Border x:Name="previewHost" Grid.Row="1" Margin="0,12,0,0" CornerRadius="6" ClipToBounds="True"
+                        Background="{DynamicResource PreviewBackgroundBrush}">
+                    <Panel>
+                        <!-- A külső réteg tolja, a belső (pontosan a képet fedő) réteg skálázódik
+                             a saját bal felső sarka körül. A logó ebben a rétegben ül, így együtt
+                             mozog és nagyítódik a képpel. -->
+                        <Panel x:Name="panLayer">
+                            <Panel x:Name="scaleLayer" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                   RenderTransformOrigin="0,0">
+                                <Image x:Name="imgPreview" Stretch="Uniform"
+                                       RenderOptions.BitmapInterpolationMode="HighQuality"/>
+                                <Canvas x:Name="logoLayer" IsVisible="False">
+                                    <Image x:Name="imgLogo" Stretch="Fill"
+                                           RenderOptions.BitmapInterpolationMode="HighQuality"/>
+                                    <Rectangle x:Name="logoFrame" IsHitTestVisible="False"
+                                               Stroke="{DynamicResource AccentFillColorDefaultBrush}"/>
+                                    <Rectangle x:Name="logoHandleTL" Classes="logoHandle" Tag="0"/>
+                                    <Rectangle x:Name="logoHandleTR" Classes="logoHandle" Tag="1"/>
+                                    <Rectangle x:Name="logoHandleBL" Classes="logoHandle" Tag="2"/>
+                                    <Rectangle x:Name="logoHandleBR" Classes="logoHandle" Tag="3"/>
+                                </Canvas>
+                            </Panel>
+                        </Panel>
+                        <TextBlock x:Name="txtPreviewHint" Classes="secondary"
+                                   Text="{DynamicResource PreviewHint}"
+                                   FontSize="15" TextAlignment="Center"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <Border x:Name="zoomBadge" IsVisible="False" IsHitTestVisible="False"
+                                HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10"
+                                Padding="10,4" CornerRadius="12" Background="#B0000000">
+                            <StackPanel Orientation="Horizontal" Spacing="6">
+                                <ui:FASymbolIcon Symbol="ZoomIn" FontSize="14" Foreground="White"/>
+                                <TextBlock x:Name="txtZoom" FontSize="12" Foreground="White"/>
+                            </StackPanel>
+                        </Border>
+                    </Panel>
+                </Border>
+            </Grid>
+        </Border>
+
+        <!-- ═══ Jobb oldal: beállítások ═══ -->
+        <ScrollViewer Grid.Row="0" Grid.Column="2" VerticalScrollBarVisibility="Auto">
+            <StackPanel Spacing="8" Margin="0,0,14,0">
+
+                <!-- Vízjel -->
+                <Border Classes="card">
+                    <StackPanel>
+                        <Grid ColumnDefinitions="*,Auto" Margin="0,0,0,12">
+                            <TextBlock Classes="cardTitle" Text="{DynamicResource Watermark}"/>
+                            <ToggleSwitch x:Name="tglWatermark" Grid.Column="1" Classes="cardSwitch"/>
+                        </Grid>
+
+                        <StackPanel x:Name="pnlWatermark">
+                            <ComboBox x:Name="cmbPreset" HorizontalAlignment="Stretch"
+                                      SelectionChanged="CmbPreset_SelectionChanged">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate x:DataType="models:WatermarkPreset">
+                                        <TextBlock Text="{Binding Name}"/>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+
+                            <Grid ColumnDefinitions="*,6,*,6,Auto" Margin="0,8,0,0">
+                                <Button x:Name="btnSavePreset" HorizontalAlignment="Stretch" Click="BtnSavePreset_Click">
+                                    <StackPanel Orientation="Horizontal" Spacing="8">
+                                        <ui:FASymbolIcon Symbol="Save" FontSize="16"/>
+                                        <TextBlock Text="{DynamicResource SavePreset}"/>
+                                    </StackPanel>
+                                </Button>
+                                <Button x:Name="btnNewPreset" Grid.Column="2" HorizontalAlignment="Stretch" Click="BtnNewPreset_Click">
+                                    <StackPanel Orientation="Horizontal" Spacing="8">
+                                        <ui:FASymbolIcon Symbol="Add" FontSize="16"/>
+                                        <TextBlock Text="{DynamicResource NewPreset}"/>
+                                    </StackPanel>
+                                </Button>
+                                <Button x:Name="btnDeletePreset" Grid.Column="4" Padding="8" VerticalAlignment="Stretch"
+                                        ToolTip.Tip="{DynamicResource DeletePreset}" Click="BtnDeletePreset_Click">
+                                    <ui:FASymbolIcon Symbol="Delete" FontSize="16"/>
+                                </Button>
+                            </Grid>
+                            <Grid ColumnDefinitions="*,6,*" Margin="0,6,0,0">
+                                <Button x:Name="btnExportPresets" HorizontalAlignment="Stretch" Click="BtnExportPresets_Click">
+                                    <StackPanel Orientation="Horizontal" Spacing="8">
+                                        <ui:FASymbolIcon Symbol="Upload" FontSize="16"/>
+                                        <TextBlock Text="{DynamicResource ExportPresets}"/>
+                                    </StackPanel>
+                                </Button>
+                                <Button x:Name="btnImportPresets" Grid.Column="2" HorizontalAlignment="Stretch" Click="BtnImportPresets_Click">
+                                    <StackPanel Orientation="Horizontal" Spacing="8">
+                                        <ui:FASymbolIcon Symbol="Download" FontSize="16"/>
+                                        <TextBlock Text="{DynamicResource ImportPresets}"/>
+                                    </StackPanel>
+                                </Button>
+                            </Grid>
+
+                            <Expander x:Name="expWatermark" Classes="settings" Header="{DynamicResource PresetSettings}">
+                                <StackPanel>
+                                    <TextBlock Text="{DynamicResource PresetName}" Margin="0,0,0,4"/>
+                                    <TextBox x:Name="txtPresetName"/>
+
+                                    <TextBlock Classes="label" Text="{DynamicResource TextLabel}"/>
+                                    <TextBox x:Name="txtText"/>
+
+                                    <TextBlock Classes="label" Text="{DynamicResource Font}"/>
+                                    <ComboBox x:Name="cmbFont" HorizontalAlignment="Stretch" MaxDropDownHeight="360">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate x:DataType="FontFamily">
+                                                <TextBlock Text="{Binding Name}" FontFamily="{Binding}"/>
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
+
+                                    <StackPanel Orientation="Horizontal" Spacing="16" Margin="0,8,0,0">
+                                        <CheckBox x:Name="chkBold" Content="{DynamicResource Bold}"/>
+                                        <CheckBox x:Name="chkItalic" Content="{DynamicResource Italic}"/>
+                                    </StackPanel>
+
+                                    <Grid Classes="sliderHeader" ColumnDefinitions="*,Auto">
+                                        <TextBlock Text="{DynamicResource FontSize}"/>
+                                        <TextBlock Grid.Column="1" Classes="secondary"
+                                                   Text="{Binding #sldSize.Value, StringFormat='{}{0:0.0}%'}"/>
+                                    </Grid>
+                                    <Slider x:Name="sldSize" Minimum="1" Maximum="20" TickFrequency="0.5" IsSnapToTickEnabled="True"/>
+
+                                    <Grid Classes="sliderHeader" ColumnDefinitions="*,Auto">
+                                        <TextBlock Text="{DynamicResource Opacity}"/>
+                                        <TextBlock Grid.Column="1" Classes="secondary"
+                                                   Text="{Binding #sldOpacity.Value, StringFormat='{}{0:0}%'}"/>
+                                    </Grid>
+                                    <Slider x:Name="sldOpacity" Minimum="5" Maximum="100" TickFrequency="1" IsSnapToTickEnabled="True"/>
+
+                                    <Grid Classes="sliderHeader" ColumnDefinitions="*,Auto">
+                                        <TextBlock Text="{DynamicResource Angle}"/>
+                                        <TextBlock Grid.Column="1" Classes="secondary"
+                                                   Text="{Binding #sldAngle.Value, StringFormat='{}{0:0}°'}"/>
+                                    </Grid>
+                                    <Slider x:Name="sldAngle" Minimum="0" Maximum="90" TickFrequency="1" IsSnapToTickEnabled="True"/>
+
+                                    <TextBlock Classes="label" Text="{DynamicResource Color}"/>
+                                    <WrapPanel>
+                                        <Button Classes="swatch" Tag="#FFFFFF" Click="Swatch_Click"><Border Classes="chip" Background="#FFFFFF"/></Button>
+                                        <Button Classes="swatch" Tag="#C8C8C8" Click="Swatch_Click"><Border Classes="chip" Background="#C8C8C8"/></Button>
+                                        <Button Classes="swatch" Tag="#9E9E9E" Click="Swatch_Click"><Border Classes="chip" Background="#9E9E9E"/></Button>
+                                        <Button Classes="swatch" Tag="#5A5A5A" Click="Swatch_Click"><Border Classes="chip" Background="#5A5A5A"/></Button>
+                                        <Button Classes="swatch" Tag="#000000" Click="Swatch_Click"><Border Classes="chip" Background="#000000"/></Button>
+                                        <Button Classes="swatch" Tag="#D32F2F" Click="Swatch_Click"><Border Classes="chip" Background="#D32F2F"/></Button>
+                                        <Button Classes="swatch" Tag="#1976D2" Click="Swatch_Click"><Border Classes="chip" Background="#1976D2"/></Button>
+                                        <Button Classes="swatch" Tag="#FBC02D" Click="Swatch_Click"><Border Classes="chip" Background="#FBC02D"/></Button>
+                                    </WrapPanel>
+                                    <Grid ColumnDefinitions="*,Auto" Margin="0,6,0,0">
+                                        <TextBox x:Name="txtColor" ToolTip.Tip="{DynamicResource ColorTooltip}"/>
+                                        <Border x:Name="colorPreview" Grid.Column="1" Classes="chip" Width="32" Height="32"
+                                                Margin="8,0,0,0"/>
+                                    </Grid>
+
+                                    <Grid Classes="sliderHeader" ColumnDefinitions="*,Auto">
+                                        <TextBlock Text="{DynamicResource HSpacing}"/>
+                                        <TextBlock Grid.Column="1" Classes="secondary"
+                                                   Text="{Binding #sldSpacingX.Value, StringFormat='{}{0:0.0}×'}"/>
+                                    </Grid>
+                                    <Slider x:Name="sldSpacingX" Minimum="0.2" Maximum="6" TickFrequency="0.1" IsSnapToTickEnabled="True"/>
+
+                                    <Grid Classes="sliderHeader" ColumnDefinitions="*,Auto">
+                                        <TextBlock Text="{DynamicResource VSpacing}"/>
+                                        <TextBlock Grid.Column="1" Classes="secondary"
+                                                   Text="{Binding #sldSpacingY.Value, StringFormat='{}{0:0.0}×'}"/>
+                                    </Grid>
+                                    <Slider x:Name="sldSpacingY" Minimum="0.2" Maximum="8" TickFrequency="0.1" IsSnapToTickEnabled="True"/>
+
+                                    <CheckBox x:Name="chkStagger" Content="{DynamicResource Stagger}" Margin="0,8,0,0"/>
+                                </StackPanel>
+                            </Expander>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <!-- Logó -->
+                <Border Classes="card">
+                    <StackPanel>
+                        <Grid ColumnDefinitions="*,Auto" Margin="0,0,0,12">
+                            <TextBlock Classes="cardTitle" Text="{DynamicResource Logo}"/>
+                            <ToggleSwitch x:Name="tglLogo" Grid.Column="1" Classes="cardSwitch"/>
+                        </Grid>
+
+                        <StackPanel x:Name="pnlLogo">
+                            <ComboBox x:Name="cmbLogoPreset" HorizontalAlignment="Stretch"
+                                      SelectionChanged="CmbLogoPreset_SelectionChanged">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate x:DataType="models:LogoPreset">
+                                        <TextBlock Text="{Binding Name}"/>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+
+                            <Grid ColumnDefinitions="*,6,*,6,Auto" Margin="0,8,0,0">
+                                <Button x:Name="btnSaveLogoPreset" HorizontalAlignment="Stretch" Click="BtnSaveLogoPreset_Click">
+                                    <StackPanel Orientation="Horizontal" Spacing="8">
+                                        <ui:FASymbolIcon Symbol="Save" FontSize="16"/>
+                                        <TextBlock Text="{DynamicResource SavePreset}"/>
+                                    </StackPanel>
+                                </Button>
+                                <Button x:Name="btnNewLogoPreset" Grid.Column="2" HorizontalAlignment="Stretch" Click="BtnNewLogoPreset_Click">
+                                    <StackPanel Orientation="Horizontal" Spacing="8">
+                                        <ui:FASymbolIcon Symbol="Add" FontSize="16"/>
+                                        <TextBlock Text="{DynamicResource NewPreset}"/>
+                                    </StackPanel>
+                                </Button>
+                                <Button x:Name="btnDeleteLogoPreset" Grid.Column="4" Padding="8" VerticalAlignment="Stretch"
+                                        ToolTip.Tip="{DynamicResource DeletePreset}" Click="BtnDeleteLogoPreset_Click">
+                                    <ui:FASymbolIcon Symbol="Delete" FontSize="16"/>
+                                </Button>
+                            </Grid>
+
+                            <TextBlock Classes="secondary" FontSize="12" TextWrapping="Wrap" Margin="0,10,0,0"
+                                       Text="{DynamicResource LogoEditTip}"/>
+                            <Button x:Name="btnResetLogo" HorizontalAlignment="Stretch" Margin="0,8,0,0"
+                                    IsEnabled="False" Click="BtnResetLogo_Click">
+                                <StackPanel Orientation="Horizontal" Spacing="8">
+                                    <ui:FASymbolIcon Symbol="Undo" FontSize="16"/>
+                                    <TextBlock Text="{DynamicResource ResetLogo}"/>
+                                </StackPanel>
+                            </Button>
+
+                            <Expander x:Name="expLogo" Classes="settings" Header="{DynamicResource PresetSettings}">
+                                <StackPanel>
+                                    <TextBlock Text="{DynamicResource PresetName}" Margin="0,0,0,4"/>
+                                    <TextBox x:Name="txtLogoPresetName"/>
+
+                                    <TextBlock Classes="label" Text="{DynamicResource LogoImage}"/>
+                                    <Grid ColumnDefinitions="Auto,*,Auto">
+                                        <Border Width="56" Height="42" CornerRadius="4" ClipToBounds="True"
+                                                Background="{DynamicResource PreviewBackgroundBrush}">
+                                            <Image x:Name="imgLogoThumb" Stretch="Uniform" Margin="3"/>
+                                        </Border>
+                                        <TextBlock x:Name="txtLogoFile" Grid.Column="1" Classes="secondary" Margin="10,0"
+                                                   VerticalAlignment="Center" TextTrimming="CharacterEllipsis"
+                                                   Text="{DynamicResource NoLogo}"/>
+                                        <Button x:Name="btnChooseLogo" Grid.Column="2" Content="{DynamicResource Browse}"
+                                                Click="BtnChooseLogo_Click"/>
+                                    </Grid>
+
+                                    <TextBlock Classes="label" Text="{DynamicResource LogoPosition}"/>
+                                    <UniformGrid x:Name="anchorGrid" Rows="3" Columns="3" HorizontalAlignment="Left">
+                                        <RadioButton Classes="anchor" GroupName="LogoAnchor" Tag="0"/>
+                                        <RadioButton Classes="anchor" GroupName="LogoAnchor" Tag="1"/>
+                                        <RadioButton Classes="anchor" GroupName="LogoAnchor" Tag="2"/>
+                                        <RadioButton Classes="anchor" GroupName="LogoAnchor" Tag="3"/>
+                                        <RadioButton Classes="anchor" GroupName="LogoAnchor" Tag="4"/>
+                                        <RadioButton Classes="anchor" GroupName="LogoAnchor" Tag="5"/>
+                                        <RadioButton Classes="anchor" GroupName="LogoAnchor" Tag="6"/>
+                                        <RadioButton Classes="anchor" GroupName="LogoAnchor" Tag="7"/>
+                                        <RadioButton Classes="anchor" GroupName="LogoAnchor" Tag="8"/>
+                                    </UniformGrid>
+
+                                    <Grid Classes="sliderHeader" ColumnDefinitions="*,Auto">
+                                        <TextBlock Text="{DynamicResource LogoSize}"/>
+                                        <TextBlock Grid.Column="1" Classes="secondary"
+                                                   Text="{Binding #sldLogoSize.Value, StringFormat='{}{0:0}%'}"/>
+                                    </Grid>
+                                    <Slider x:Name="sldLogoSize" Minimum="2" Maximum="100" TickFrequency="1" IsSnapToTickEnabled="True"/>
+
+                                    <Grid Classes="sliderHeader" ColumnDefinitions="*,Auto">
+                                        <TextBlock Text="{DynamicResource Opacity}"/>
+                                        <TextBlock Grid.Column="1" Classes="secondary"
+                                                   Text="{Binding #sldLogoOpacity.Value, StringFormat='{}{0:0}%'}"/>
+                                    </Grid>
+                                    <Slider x:Name="sldLogoOpacity" Minimum="5" Maximum="100" TickFrequency="1" IsSnapToTickEnabled="True"/>
+
+                                    <Grid Classes="sliderHeader" ColumnDefinitions="*,Auto">
+                                        <TextBlock Text="{DynamicResource LogoMargin}"/>
+                                        <TextBlock Grid.Column="1" Classes="secondary"
+                                                   Text="{Binding #sldLogoMargin.Value, StringFormat='{}{0:0.0}%'}"/>
+                                    </Grid>
+                                    <Slider x:Name="sldLogoMargin" Minimum="0" Maximum="20" TickFrequency="0.5" IsSnapToTickEnabled="True"/>
+                                </StackPanel>
+                            </Expander>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <!-- Kimenet -->
+                <Border Classes="card">
+                    <StackPanel>
+                        <TextBlock Classes="cardTitle" Text="{DynamicResource Output}" Margin="0,0,0,12"/>
+
+                        <TextBlock Text="{DynamicResource OutputFolder}" Margin="0,0,0,4"/>
+                        <Grid ColumnDefinitions="*,Auto">
+                            <TextBox x:Name="txtOutputDir" ToolTip.Tip="{DynamicResource OutputTooltip}"/>
+                            <Button Grid.Column="1" Content="{DynamicResource Browse}" Margin="6,0,0,0"
+                                    VerticalAlignment="Stretch" Click="BtnBrowseOutput_Click"/>
+                        </Grid>
+
+                        <TextBlock Classes="label" Text="{DynamicResource Format}"/>
+                        <ComboBox x:Name="cmbFormat" HorizontalAlignment="Stretch" SelectedIndex="0">
+                            <ComboBoxItem Content="{DynamicResource OriginalFormat}" Tag="orig"/>
+                            <ComboBoxItem Content="JPEG" Tag="jpg"/>
+                            <ComboBoxItem Content="PNG" Tag="png"/>
+                        </ComboBox>
+
+                        <Grid Classes="sliderHeader" ColumnDefinitions="*,Auto">
+                            <TextBlock Text="{DynamicResource JpegQuality}"/>
+                            <TextBlock Grid.Column="1" Classes="secondary"
+                                       Text="{Binding #sldQuality.Value, StringFormat='{}{0:0}'}"/>
+                        </Grid>
+                        <Slider x:Name="sldQuality" Minimum="50" Maximum="100" Value="92"
+                                TickFrequency="1" IsSnapToTickEnabled="True"/>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- ═══ Alsó sáv ═══ -->
+        <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Margin="0,12,0,0"
+              ColumnDefinitions="Auto,Auto,*,Auto,Auto">
+            <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center"
+                        ToolTip.Tip="{DynamicResource Language}">
+                <ui:FASymbolIcon Symbol="Globe" FontSize="18"/>
+                <ComboBox x:Name="cmbLanguage" Width="120" SelectionChanged="CmbLanguage_SelectionChanged">
+                    <ComboBoxItem Content="English" Tag="en"/>
+                    <ComboBoxItem Content="Magyar" Tag="hu"/>
+                    <ComboBoxItem Content="Deutsch" Tag="de"/>
+                </ComboBox>
+            </StackPanel>
+            <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center"
+                        Margin="16,0,0,0" ToolTip.Tip="{DynamicResource Theme}">
+                <ui:FASymbolIcon Symbol="DarkTheme" FontSize="18"/>
+                <ComboBox x:Name="cmbTheme" Width="130" SelectionChanged="CmbTheme_SelectionChanged">
+                    <ComboBoxItem Content="{DynamicResource ThemeSystem}" Tag="system"/>
+                    <ComboBoxItem Content="{DynamicResource ThemeLight}" Tag="light"/>
+                    <ComboBoxItem Content="{DynamicResource ThemeDark}" Tag="dark"/>
+                </ComboBox>
+            </StackPanel>
+
+            <StackPanel Grid.Column="2" VerticalAlignment="Center" Margin="20,0">
+                <TextBlock x:Name="txtStatus" Classes="secondary" Text="{DynamicResource Ready}"
+                           TextTrimming="CharacterEllipsis"/>
+                <ProgressBar x:Name="progress" Margin="0,6,0,0" IsVisible="False"/>
+            </StackPanel>
+
+            <Button x:Name="btnOpenFolder" Grid.Column="3" Margin="0,0,8,0" Padding="14,8" IsVisible="False"
+                    Click="BtnOpenFolder_Click">
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <ui:FASymbolIcon Symbol="OpenFolder" FontSize="16"/>
+                    <TextBlock Text="{DynamicResource OpenFolder}"/>
+                </StackPanel>
+            </Button>
+            <Button x:Name="btnApply" Grid.Column="4" Classes="accent" Padding="20,8" Click="BtnApply_Click">
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <ui:FASymbolIcon Symbol="Checkmark" FontSize="16"/>
+                    <TextBlock Text="{DynamicResource Apply}" FontWeight="SemiBold"/>
+                </StackPanel>
+            </Button>
+        </Grid>
+    </Grid>
+</win:FAAppWindow>

@@ -1,0 +1,100 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <x:String x:Key="AppTitle">ImageMark – Watermark Tool</x:String>
+
+    <x:String x:Key="Images">Images</x:String>
+    <x:String x:Key="AddImages">Add images…</x:String>
+    <x:String x:Key="Remove">Remove</x:String>
+    <x:String x:Key="ClearList">Clear list</x:String>
+    <x:String x:Key="DragTip">Tip: you can also drag images into the window from File Explorer.</x:String>
+
+    <x:String x:Key="Preview">Preview</x:String>
+    <x:String x:Key="PreviewHint">Add images on the left&#10;to see the preview here.</x:String>
+    <x:String x:Key="ZoomHint">Click: zoom in / reset · Wheel: zoom · Drag: pan</x:String>
+
+    <x:String x:Key="Watermark">Watermark</x:String>
+    <x:String x:Key="Logo">Logo</x:String>
+    <x:String x:Key="PresetSettings">Preset settings</x:String>
+    <x:String x:Key="PresetName">Preset name</x:String>
+    <x:String x:Key="SavePreset">Save</x:String>
+    <x:String x:Key="NewPreset">New</x:String>
+    <x:String x:Key="DeletePreset">Delete</x:String>
+    <x:String x:Key="ExportPresets">Export…</x:String>
+    <x:String x:Key="ImportPresets">Import…</x:String>
+
+    <x:String x:Key="LogoImage">Logo image</x:String>
+    <x:String x:Key="NoLogo">No image selected</x:String>
+    <x:String x:Key="LogoPosition">Default position on the image</x:String>
+    <x:String x:Key="LogoSize">Size (% of image width)</x:String>
+    <x:String x:Key="LogoMargin">Distance from the image edge</x:String>
+    <x:String x:Key="LogoEditTip">Drag the logo on the preview to move it, drag its corners to resize. The change applies to the current image only.</x:String>
+    <x:String x:Key="ResetLogo">Back to the preset position</x:String>
+    <x:String x:Key="SelectLogoTitle">Select logo</x:String>
+    <x:String x:Key="MsgNothingEnabled">Turn on the watermark or the logo first!</x:String>
+    <x:String x:Key="MsgNoLogoImage">The logo preset has no image selected!</x:String>
+    <x:String x:Key="MsgLogoLoadFailed">The logo could not be loaded: {0}</x:String>
+
+    <x:String x:Key="TextLabel">Text</x:String>
+    <x:String x:Key="Font">Font</x:String>
+    <x:String x:Key="Bold">Bold</x:String>
+    <x:String x:Key="Italic">Italic</x:String>
+    <x:String x:Key="FontSize">Font size (% of image width)</x:String>
+    <x:String x:Key="Opacity">Opacity</x:String>
+    <x:String x:Key="Angle">Angle</x:String>
+    <x:String x:Key="Color">Color</x:String>
+    <x:String x:Key="ColorTooltip">Hex color code, e.g. #9E9E9E</x:String>
+    <x:String x:Key="HSpacing">Horizontal spacing</x:String>
+    <x:String x:Key="VSpacing">Vertical spacing</x:String>
+    <x:String x:Key="Stagger">Offset rows (brick pattern)</x:String>
+
+    <x:String x:Key="Output">Output</x:String>
+    <x:String x:Key="OutputFolder">Output folder</x:String>
+    <x:String x:Key="OutputTooltip">If left empty, images are saved next to the originals with a "_watermark" suffix.</x:String>
+    <x:String x:Key="Browse">Browse…</x:String>
+    <x:String x:Key="Format">Format</x:String>
+    <x:String x:Key="OriginalFormat">Original format</x:String>
+    <x:String x:Key="JpegQuality">JPEG quality</x:String>
+
+    <x:String x:Key="Apply">Apply to images</x:String>
+    <x:String x:Key="OpenFolder">Open output folder</x:String>
+    <x:String x:Key="Ready">Ready.</x:String>
+
+    <x:String x:Key="Language">Language</x:String>
+    <x:String x:Key="Theme">Theme</x:String>
+    <x:String x:Key="ThemeSystem">System</x:String>
+    <x:String x:Key="ThemeLight">Light</x:String>
+    <x:String x:Key="ThemeDark">Dark</x:String>
+
+    <x:String x:Key="SelectImagesTitle">Select images</x:String>
+    <x:String x:Key="ImageFiles">Image files</x:String>
+    <x:String x:Key="AllFiles">All files</x:String>
+    <x:String x:Key="SelectOutputTitle">Select output folder</x:String>
+    <x:String x:Key="ExportTitle">Export presets</x:String>
+    <x:String x:Key="ImportTitle">Import presets</x:String>
+    <x:String x:Key="PresetFiles">Preset files</x:String>
+
+    <x:String x:Key="StatusAdded">{0} image(s) added, {1} in total.</x:String>
+    <x:String x:Key="StatusNoneAdded">No new images were added (only image files are supported).</x:String>
+    <x:String x:Key="StatusPresetSaved">Preset "{0}" saved.</x:String>
+    <x:String x:Key="StatusPresetCreated">Preset "{0}" created.</x:String>
+    <x:String x:Key="MsgNamePreset">Please give the preset a name!</x:String>
+    <x:String x:Key="MsgConfirmDelete">Are you sure you want to delete the preset "{0}"?</x:String>
+    <x:String x:Key="MsgAddImagesFirst">Add some images to the list on the left first!</x:String>
+    <x:String x:Key="MsgEmptyText">The watermark text cannot be empty!</x:String>
+    <x:String x:Key="StatusProcessing">Processing: {0}/{1}…</x:String>
+    <x:String x:Key="StatusDone">Done! {0} image(s) processed.</x:String>
+    <x:String x:Key="StatusDoneErrors">Done: {0} succeeded, {1} failed.</x:String>
+    <x:String x:Key="MsgErrorsHeader">Errors occurred with the following images:</x:String>
+    <x:String x:Key="StatusPreviewError">Preview error: {0}</x:String>
+    <x:String x:Key="StatusExported">{0} preset(s) exported.</x:String>
+    <x:String x:Key="StatusImported">{0} preset(s) imported.</x:String>
+    <x:String x:Key="MsgImportFailed">Import failed: {0}</x:String>
+    <x:String x:Key="DefaultPresetName">Default</x:String>
+    <x:String x:Key="ExportSelectPrompt">Select the presets you want to export:</x:String>
+    <x:String x:Key="SelectAll">Select all</x:String>
+    <x:String x:Key="OK">OK</x:String>
+    <x:String x:Key="Cancel">Cancel</x:String>
+    <x:String x:Key="NewPresetName">New preset</x:String>
+
+</ResourceDictionary>
